@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Analyzer</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { font-size: 18px; padding: 10px; margin-top: 10px; }
+        .result { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Password Strength Analyzer</h1>
+    <input type="text" id="password" placeholder="Enter password">
+    <button onclick="checkStrength()">Check Strength</button>
+    <p class="result" id="result"></p>
+
+    <script>
+        function checkStrength() {
+            const password = document.getElementById("password").value;
+            fetch("/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = "Strength: " + data.strength;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
